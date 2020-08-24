@@ -1,42 +1,20 @@
-import React, { useEffect, useState } from "react";
-import classnames from "classnames";
-import axios from "axios";
+import React, { useState } from "react";
+
+import useTypes from './hooks/useTypes';
+import usePokemon from './hooks/usePokemon';
+import Pagination from './Pagination';
+import Types from './Types';
+import PokemonList from './PokemonList';
 
 import "./styles.css";
 
 function App() {
-  const [pokemon, setPokemon] = useState([]);
   const [offset, setOffset] = useState(0);
-  const [types, setTypes] = useState([]);
   const [activeType, setActiveType] = useState('');
 
-  const getAllTypes = () => {
-    axios
-      .get("https://pokeapi.co/api/v2/type")
-      .then((response) => response.data.results)
-      .then((resTypes) => {
-        const realTypes = resTypes.filter(({ name }) => name !== "shadow" && name !== "unknown");
-        const typePromises = realTypes.map(({ url }) =>  axios.get(url).then((type) => type.data ));
-        Promise.all(typePromises).then(results => setTypes(results))
-      })
-      .catch((error) => {
-        console.log("Request failed");
-      });
-  };
-
-
-  const loadPokemon = () => {
-    axios
-      .get(`https://pokeapi.co/api/v2/pokemon?limit=721`)
-      .then((response) => setPokemon(response.data.results))
-      .catch((error) => {
-        console.log("Request failed");
-      });
-  };
-
-  useEffect(getAllTypes, []);
-  useEffect(loadPokemon, []);
-
+  const types = useTypes();
+  const pokemon = usePokemon();
+ 
   const getOffsetPokemon = (activePokemon) => activePokemon.slice(offset, offset + 9);
   
   const getPokemonToDisplay = () => {
@@ -64,45 +42,23 @@ function App() {
 
   const onFilterType = (type) => {
     setOffset(0);
-    setActiveType(type)
+    setActiveType(type);
   };
 
   return (
     <div className="App">
-      <div className="TypesContainer">
-        {types.map(({ name }, index) => (
-          <span
-            key={name}
-            className={classnames("TypeContainer", `TypeContainer--${name}`, activeType === name ? 'active' : '')}
-            onClick={() => onFilterType(name)}
-          >
-            <span className="TypeName">{name}</span>
-          </span>
-        ))}
-      </div>
-      <div className="PokemonWrapper">
-        {getPokemonToDisplay().map(({ name }, index) => (
-          <div className="Pokemon" key={index}>
-            <img
-              alt={name}
-              src={`https://img.pokemondb.net/sprites/x-y/normal/${name}.png`}
-              width={120}
-            />
-            <div className="PokemonName">{name}</div>
-          </div>
-        ))}
-      </div>
-      <div className="Pagination">
-        <button disabled={offset === 0} onClick={onClickPrev}>
-          Prev
-        </button>
-        <button onClick={onClickNext} className="next">
-          Next
-        </button>
-        <button onClick={onClickReset} className="next">
-          Reset
-        </button>
-      </div>
+      <Types
+        types={types}
+        activeType={activeType}
+        onFilterType={onFilterType}
+      />
+      <PokemonList pokemon={getPokemonToDisplay()} />
+      <Pagination 
+        offset={offset}
+        onClickNext={onClickNext}
+        onClickPrev={onClickPrev}
+        onClickReset={onClickReset}
+      />
     </div>
   );
 }
