@@ -21,7 +21,7 @@
 .Pagination {
   margin-top: 50px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   grid-template-rows: 1fr;
 }
 
@@ -34,8 +34,8 @@
 .TypeContainer {
   display: inline-block;
   border-radius: 20px;
-  padding: 2px 5px;
-  font-size: 13px;
+  padding: 3px 6px;
+  font-size: 16px;
   margin: 3px;
   color: white;
   font-weight: bold;
@@ -132,17 +132,8 @@
   border: 2px solid #9b6470;
 }
 
-.TypeContainer--unknown {
-  background-color: #68a090;
-  border: 2px solid #44685e;
-}
-
-.TypeContainer--unknown .TypeName {
-  display: none;
-}
-
-.TypeContainer--unknown:after {
-  content: "???";
+.TypeContainer.active {
+  border-width: 4px;
 }
 
 button {

@@ -35,7 +35,7 @@ function App() {
   };
 
   useEffect(getAllTypes, []);
-  useEffect(loadPokemon, [offset]);
+  useEffect(loadPokemon, []);
 
   const getOffsetPokemon = (activePokemon) => activePokemon.slice(offset, offset + 9);
   
@@ -57,6 +57,11 @@ function App() {
     setOffset(offset + 9);
   };
 
+  const onClickReset = () => {
+    setOffset(0);
+    setActiveType('');
+  };
+
   const onFilterType = (type) => {
     setOffset(0);
     setActiveType(type)
@@ -68,7 +73,7 @@ function App() {
         {types.map(({ name }, index) => (
           <span
             key={name}
-            className={classnames("TypeContainer", `TypeContainer--${name}`)}
+            className={classnames("TypeContainer", `TypeContainer--${name}`, activeType === name ? 'active' : '')}
             onClick={() => onFilterType(name)}
           >
             <span className="TypeName">{name}</span>
@@ -93,6 +98,9 @@ function App() {
         </button>
         <button onClick={onClickNext} className="next">
           Next
+        </button>
+        <button onClick={onClickReset} className="next">
+          Reset
         </button>
       </div>
     </div>
