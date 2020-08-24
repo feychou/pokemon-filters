@@ -13,19 +13,7 @@ function App() {
   const [activeType, setActiveType] = useState('');
 
   const types = useTypes();
-  const pokemon = usePokemon();
- 
-  const getOffsetPokemon = (activePokemon) => activePokemon.slice(offset, offset + 9);
-  
-  const getPokemonToDisplay = () => {
-    if (!activeType) return getOffsetPokemon(pokemon);
-
-    const activePokemon =  types.find(({ name }) => name === activeType).pokemon;
-    const activePokemonNames = activePokemon.map(({pokemon}) => pokemon.name);
-    const activePokemonSubset = pokemon.filter(({name}) => activePokemonNames.includes(name))
-    const offsetPokemon = getOffsetPokemon(activePokemonSubset);
-    return offsetPokemon;
-  }
+  const activePokemon = usePokemon(activeType, offset, types);
 
   const onClickPrev = () => {
     setOffset(offset - 9);
@@ -52,7 +40,7 @@ function App() {
         activeType={activeType}
         onFilterType={onFilterType}
       />
-      <PokemonList pokemon={getPokemonToDisplay()} />
+      <PokemonList pokemon={activePokemon} />
       <Pagination 
         offset={offset}
         onClickNext={onClickNext}

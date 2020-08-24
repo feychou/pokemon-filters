@@ -4,7 +4,6 @@ import axios from "axios";
 function useTypes() {
   const [types, setTypes] = useState([]);
 
-
   const getAllTypes = () => {
     axios
       .get("https://pokeapi.co/api/v2/type")

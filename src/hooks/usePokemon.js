@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-function usePokemon() {
+function usePokemon(activeType, offset, types) {
   const [pokemon, setPokemon] = useState([]);
+  const [activePokemon, setActivePokemon] = useState([]);
 
   const loadPokemon = () => {
     axios
@@ -13,9 +14,24 @@ function usePokemon() {
       });
   };
 
-  useEffect(loadPokemon, []);
+  const getOffsetPokemon = (activePokemon) => activePokemon.slice(offset, offset + 9);
+  
+  const getPokemonToDisplay = () => {
+    if (!activeType) {
+      setActivePokemon(getOffsetPokemon(pokemon))
+      return
+    }
 
-  return pokemon;
+    const activePokemon =  types.find(({ name }) => name === activeType).pokemon;
+    const activePokemonNames = activePokemon.map(({pokemon}) => pokemon.name);
+    const activePokemonSubset = pokemon.filter(({name}) => activePokemonNames.includes(name))
+    setActivePokemon(getOffsetPokemon(activePokemonSubset));
+  }
+
+  useEffect(loadPokemon, []);
+  useEffect(getPokemonToDisplay, [pokemon, activeType, offset])
+
+  return activePokemon;
 }
 
 export default usePokemon;
