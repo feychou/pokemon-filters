@@ -9,31 +9,20 @@ function App() {
   const [offset, setOffset] = useState(0);
   const [types, setTypes] = useState([]);
 
-  const fetchTypeData = (typeUrl) => {
-    axios.get(typeUrl).then((type) => {
-      setTypes((prev) => {
-        const filteredTypes = prev.filter(({ url }) => url !== typeUrl);
-        const newTypes = [...filteredTypes, type.data];
-        return newTypes;
-      });
-    });
-  };
-
   const getAllTypes = () => {
     axios
       .get("https://pokeapi.co/api/v2/type")
       .then((response) => response.data.results)
-      .then((resTypes) =>
-        resTypes
-          .filter(({ name }) => name !== "shadow")
-          .forEach(({ url }) => fetchTypeData(url))
-      )
+      .then((resTypes) => {
+        const typesNoShadow = resTypes.filter(({ name }) => name !== "shadow")
+        const typePromises = typesNoShadow.map(({ url }) =>  axios.get(url).then((type) => type.data ));
+        Promise.all(typePromises).then(results => setTypes(results))
+      })
       .catch((error) => {
         console.log("Request failed");
       });
   };
 
-  console.log(types);
 
   const loadPokemon = () => {
     axios
