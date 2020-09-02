@@ -1,0 +1,20 @@
+.Pagination {
+  max-width: 500px;
+  margin: auto;
+}
+
+.Pagination {
+  margin-top: 50px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr;
+}
+
+button {
+  margin: 20px auto;
+  height: 30px;
+  display: block;
+  font-weight: bold;
+  width: 130px;
+  cursor: pointer;
+}

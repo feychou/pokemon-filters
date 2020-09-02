@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 
-import useTypes from './hooks/useTypes';
-import usePokemon from './hooks/usePokemon';
+import useTypes from '../hooks/useTypes';
+import usePokemon from '../hooks/usePokemon';
 import Pagination from './Pagination';
 import Types from './Types';
 import PokemonList from './PokemonList';
-
-import "./styles.css";
 
 function App() {
   const [offset, setOffset] = useState(0);

@@ -1,0 +1,18 @@
+.PokemonWrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-column-gap: 20px;
+  grid-row-gap: 50px;
+  text-align: center;
+}
+
+.PokemonWrapper {
+  max-width: 500px;
+  margin: auto;
+}
+
+.PokemonName {
+  font-weight: bold;
+  margin-top: 10px;
+}
