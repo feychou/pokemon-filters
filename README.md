@@ -1,2 +1,3 @@
 # pokemon-filters
-Created with CodeSandbox
+
+fetch and filter ~~almost~~ ALL the pokemon
